@@ -1,0 +1,7 @@
+{
+  "extends": "simplymadeapps",
+  "rules": {
+    "jsdoc/require-jsdoc": "off",
+    "no-var": "off"
+  }
+}

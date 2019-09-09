@@ -1,0 +1,25 @@
+{
+  "name": "simple-authorization",
+  "version": "0.1.0",
+  "description": "Authorization through JavaScript classes with support for React",
+  "homepage": "https://github.com/simplymadeapps/simple-authorization",
+  "license": "MIT",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simplymadeapps/simple-authorization.git"
+  },
+  "dependencies": {
+    "humps": "^2.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.3.0",
+    "eslint-config-simplymadeapps": "^1.2.1",
+    "jest": "^24.9.0"
+  }
+}
