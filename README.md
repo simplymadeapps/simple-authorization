@@ -16,12 +16,14 @@ Install the package via [Yarn](https://yarnpkg.com):
 yarn add simple-authorization
 ```
 
-Initialize Simple Authorization to point to the directory your policy classes are stored
-and to configure the data available to your policy classes.
+Initialize Simple Authorization to point to the directory with your policy classes
+and to configure the data made available to your policy classes.
 
 ```js
+import SimpleAuthorization from "simple-authorization";
+
 // Assign the policy directory to load policy classes by naming convention.
-SimpleAuthorization.policyDirectory = require("path").resolve("./policies");
+SimpleAuthorization.policyDirectory = require("path").resolve("src/policies");
 
 // Assign a function that will return the data you need in each of your policies to make authorization decisions.
 SimpleAuthorization.policyData = () => {
