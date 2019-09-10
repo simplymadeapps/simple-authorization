@@ -96,6 +96,8 @@ policy("Post", { userId: 5 }).edit();
 // => true
 ```
 
+## React
+
 Simple Authorization also includes an `<Authorize>` React component for wrapping items that should
 be conditionally displayed based on the user's permissions.
 
