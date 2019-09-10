@@ -1,15 +1,13 @@
-var Authorize = require("../src/authorize");
-var policy = require("../src").policy;
+var Authorize = require("../src").Authorize;
 var React = require("react");
 var shallow = require("enzyme").shallow;
+var SimpleAuthorization = require("../src");
 
 let mockPolicyInstance;
-jest.mock("../src", () => {
-  return {
-    policy: jest.fn().mockImplementation(() => {
-      return mockPolicyInstance;
-    })
-  };
+beforeEach(() => {
+  jest.spyOn(SimpleAuthorization, "policy").mockImplementation(() => {
+    return mockPolicyInstance;
+  });
 });
 
 describe("Authorize#isPermitted", () => {
@@ -26,11 +24,11 @@ describe("Authorize#isPermitted", () => {
           <button className="update-user" />
         </Authorize>
       );
-      policy.mockClear();
+      SimpleAuthorization.policy.mockClear();
       mockPolicyInstance.update.mockClear();
 
       expect(component.instance().isPermitted()).toBe(true);
-      expect(policy.mock.calls).toEqual([["User", { id: 5 }]]);
+      expect(SimpleAuthorization.policy.mock.calls).toEqual([["User", { id: 5 }]]);
       expect(mockPolicyInstance.update.mock.calls.length).toBe(1);
     });
   });
@@ -44,11 +42,11 @@ describe("Authorize#isPermitted", () => {
           <button className="new-user" />
         </Authorize>
       );
-      policy.mockClear();
+      SimpleAuthorization.policy.mockClear();
       mockPolicyInstance.new.mockClear();
 
       expect(component.instance().isPermitted()).toBe(false);
-      expect(policy.mock.calls).toEqual([["user"]]);
+      expect(SimpleAuthorization.policy.mock.calls).toEqual([["user"]]);
       expect(mockPolicyInstance.new.mock.calls.length).toBe(1);
     });
   });
