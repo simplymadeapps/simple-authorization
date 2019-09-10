@@ -1,4 +1,4 @@
-var ApplicationPolicy = require("../src").ApplicationPolicy;
+var ApplicationPolicy = require("../src/application-policy");
 
 describe("ApplicationPolicy#constructor", () => {
   it("assigns the given properties/values to the policy instance", () => {

@@ -7,5 +7,6 @@ module.exports = {
       lines: 100,
       statements: 100
     }
-  }
+  },
+  setupFiles: ["<rootDir>/tests/__support__/enzyme.js"]
 };

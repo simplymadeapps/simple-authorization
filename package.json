@@ -15,9 +15,15 @@
     "url": "git+https://github.com/simplymadeapps/simple-authorization.git"
   },
   "dependencies": {
-    "humps": "^2.0.1"
+    "humps": "^2.0.1",
+    "prop-types": "^15.0.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.0.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
     "eslint": "^6.3.0",
     "eslint-config-simplymadeapps": "^1.2.1",
     "jest": "^24.9.0"

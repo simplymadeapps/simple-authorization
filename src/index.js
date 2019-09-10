@@ -1,27 +1,10 @@
+var ApplicationPolicy = require("./application-policy");
+var Authorize = require("./authorize");
 var decamelize = require("humps").decamelize;
 var pascalize = require("humps").pascalize;
 var path = require("path");
+
 var SimpleAuthorization = {};
-
-/**
- * Base policy that makes data needed for authorization available to each of the policy classes. A record will
- * also be made available for permissions that differ based on the record the action is being performed on.
- */
-class ApplicationPolicy {
-  /**
-   * Initializes the policy instance with the required data.
-   *
-   * @param {object} policyData The data needed for all policies
-   */
-  constructor(policyData) {
-    var keys = Object.keys(policyData);
-
-    for (var i = 0; i < keys.length; i++) {
-      var key = keys[i];
-      this[key] = policyData[key];
-    }
-  }
-}
 
 /**
  * Helper for returning the matching policy based on the given class name or record.
@@ -77,6 +60,7 @@ function policy(classOrRecord, recordAttributes) {
 }
 
 SimpleAuthorization.ApplicationPolicy = ApplicationPolicy;
+SimpleAuthorization.Authorize = Authorize;
 SimpleAuthorization.policy = policy;
 
 module.exports = SimpleAuthorization;
