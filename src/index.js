@@ -1,4 +1,3 @@
-var ApplicationPolicy = require("./application-policy");
 var Authorize = require("./authorize");
 var decamelize = require("humps").decamelize;
 var pascalize = require("humps").pascalize;
@@ -66,7 +65,6 @@ function policy(classOrRecord, recordAttributes) {
   }
 }
 
-SimpleAuthorization.ApplicationPolicy = ApplicationPolicy;
 SimpleAuthorization.Authorize = Authorize;
 SimpleAuthorization.getPolicyData = getPolicyData;
 SimpleAuthorization.policy = policy;

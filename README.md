@@ -40,11 +40,26 @@ SimpleAuthorization.policyData = () => {
 
 ## Usage
 
+Create a base policy class to assign the data passed into the constructor to make it available to each policy.
+
+```js
+class ApplicationPolicy {
+  /**
+   * Initializes the policy instance with the required data.
+   *
+   * @param {object} policyData The data needed for all policies
+   */
+  constructor({ currentUser, record, role }) {
+    this.currentUser = currentUser;
+    this.record = record;
+    this.role = role;
+  }
+}
+```
+
 Create your policy class with the methods needed to determine whether the user is permitted to perform an action.
 
 ```js
-import { ApplicationPolicy } from "simple-authorization";
-
 class PostPolicy extends ApplicationPolicy {
   /**
    * Permission to create a blog post.
