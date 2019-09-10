@@ -1,20 +1,23 @@
-var Es6Policy = require("./__support__/policies/es6-policy").default;
-var path = require("path");
 var SimpleAuthorization = require("../src");
-var UserPolicy = require("./__support__/policies/user-policy");
+var UserPolicy = require("./__support__/policies/UserPolicy");
 var policy = SimpleAuthorization.policy;
-
-SimpleAuthorization.policyDirectory = path.resolve("tests/__support__/policies");
-SimpleAuthorization.policyData = () => {
-  return { currentUser: { id: 1 }, role: { id: 2, createPost: true, deletePost: false } };
-};
 
 class MockMissingClass {}
 class User {}
 
+beforeEach(() => {
+  SimpleAuthorization.policyData = () => {
+    return { currentUser: { id: 1 }, role: { id: 2, createPost: true, deletePost: false } };
+  };
+
+  SimpleAuthorization.policyResolver = modelName => {
+    return require("./__support__/policies/" + modelName + "Policy");
+  };
+});
+
 describe("policy", () => {
   it("returns an instance of the matching policy class when given a string", () => {
-    var userPolicy = policy("user");
+    var userPolicy = policy("User");
     expect(userPolicy).toEqual(expect.any(UserPolicy));
     expect(userPolicy.currentUser.id).toBe(1);
     expect(userPolicy.record).toBe(undefined);
@@ -22,7 +25,7 @@ describe("policy", () => {
   });
 
   it("accepts an object for dynamic behavior when given a string", () => {
-    var userPolicy = policy("user", { id: 100 });
+    var userPolicy = policy("User", { id: 100 });
     expect(userPolicy.record).toEqual({ id: 100 });
   });
 
@@ -48,22 +51,22 @@ describe("policy", () => {
     expect(userPolicy.role.id).toBe(2);
   });
 
-  it("supports exporting a policy class via `export default`", () => {
-    var es6Policy = policy("Es6");
-    expect(es6Policy).toEqual(expect.any(Es6Policy));
+  it("raises an error if the SimpleAuthorization.policyData is not set to a function", () => {
+    delete SimpleAuthorization.policyData;
+    expect(() => {
+      policy("User");
+    }).toThrowError("SimpleAuthorization.policyData must be set to a function that returns an object");
   });
 
   it("raises an error if a matching policy cannot be found", () => {
     expect(() => {
-      policy("mock-missing-class");
-    }).toThrowError("Could not find policy class: MockMissingClassPolicy");
-
+      policy("MockMissingClass");
+    }).toThrowError("SimpleAuthorization.policyResolver could not resolve a policy class for MockMissingClass");
     expect(() => {
       policy(MockMissingClass);
-    }).toThrowError("Could not find policy class: MockMissingClassPolicy");
-
+    }).toThrowError("SimpleAuthorization.policyResolver could not resolve a policy class for MockMissingClass");
     expect(() => {
       policy(new MockMissingClass());
-    }).toThrowError("Could not find policy class: MockMissingClassPolicy");
+    }).toThrowError("SimpleAuthorization.policyResolver could not resolve a policy class for MockMissingClass");
   });
 });

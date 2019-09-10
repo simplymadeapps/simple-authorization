@@ -1,4 +1,4 @@
-var ApplicationPolicy = require("./application-policy");
+var ApplicationPolicy = require("./ApplicationPolicy");
 
 /**
  * Policy for managing users.

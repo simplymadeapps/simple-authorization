@@ -1,7 +1,4 @@
 var Authorize = require("./authorize");
-var decamelize = require("humps").decamelize;
-var pascalize = require("humps").pascalize;
-var path = require("path");
 
 var SimpleAuthorization = {};
 
@@ -13,7 +10,13 @@ var SimpleAuthorization = {};
  * @returns {object} The policy instance based on the record
  */
 function getPolicyData(classOrRecord, recordAttributes) {
-  var policyData = SimpleAuthorization.policyData();
+  var policyData = {};
+
+  try {
+    policyData = SimpleAuthorization.policyData();
+  } catch (error) {
+    throw new Error("SimpleAuthorization.policyData must be set to a function that returns an object");
+  }
 
   switch (typeof classOrRecord) {
     case "object":
@@ -51,17 +54,10 @@ function policy(classOrRecord, recordAttributes) {
   var policyData = getPolicyData(classOrRecord, recordAttributes);
 
   try {
-    var policyPath = path.join(
-      SimpleAuthorization.policyDirectory,
-      decamelize(policyData.modelName, { separator: "-" }) + "-policy"
-    );
-    var PolicyClass = require(policyPath);
-    if (typeof PolicyClass === "object" && typeof PolicyClass.default === "function") {
-      PolicyClass = PolicyClass.default;
-    }
+    var PolicyClass = SimpleAuthorization.policyResolver(policyData.modelName);
     return new PolicyClass(policyData);
   } catch (error) {
-    throw new Error("Could not find policy class: " + pascalize(policyData.modelName + "Policy"));
+    throw new Error("SimpleAuthorization.policyResolver could not resolve a policy class for " + policyData.modelName);
   }
 }
 
