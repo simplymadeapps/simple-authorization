@@ -140,6 +140,20 @@ export default props => {
 };
 ```
 
+If you're looking to render markup for when a user is not permitted to perform an action, simply add `cannot`.
+
+```jsx
+import { Authorize } from "simple-authorization;
+
+export default props => {
+  return (
+    <Authorize cannot perform="create" on="Post">
+      <div>You are not authorized to create new posts.</div>
+    </Authorize>
+  );
+};
+```
+
 ## Contributing
 
 1. Fork it

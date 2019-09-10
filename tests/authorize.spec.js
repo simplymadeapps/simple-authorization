@@ -31,6 +31,18 @@ describe("Authorize#isPermitted", () => {
       expect(SimpleAuthorization.policy.mock.calls).toEqual([["User", { id: 5 }]]);
       expect(mockPolicyInstance.update.mock.calls.length).toBe(1);
     });
+
+    it("returns the opposite boolean if the `cannot` prop is used", () => {
+      mockPolicyInstance.update.mockReturnValue(true);
+
+      const component = shallow(
+        <Authorize cannot perform="update" on="User" containing={{ id: 5 }}>
+          <button className="update-user" />
+        </Authorize>
+      );
+
+      expect(component.instance().isPermitted()).toBe(false);
+    });
   });
 
   describe("when the 'containing' prop is not given", () => {
@@ -48,6 +60,18 @@ describe("Authorize#isPermitted", () => {
       expect(component.instance().isPermitted()).toBe(false);
       expect(SimpleAuthorization.policy.mock.calls).toEqual([["user"]]);
       expect(mockPolicyInstance.new.mock.calls.length).toBe(1);
+    });
+
+    it("returns the opposite boolean if the `cannot` prop is used", () => {
+      mockPolicyInstance.update.mockReturnValue(true);
+
+      const component = shallow(
+        <Authorize cannot perform="new" on="user">
+          <button className="new-user" />
+        </Authorize>
+      );
+
+      expect(component.instance().isPermitted()).toBe(true);
     });
   });
 });

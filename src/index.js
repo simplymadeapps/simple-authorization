@@ -29,11 +29,15 @@ class Authorize extends React.Component {
    * @returns {boolean} Whether the user is permitted
    */
   isPermitted() {
+    let isPermitted;
+
     if (this.props.containing == null) {
-      return SimpleAuthorization.policy(this.props.on)[this.props.perform]();
+      isPermitted = SimpleAuthorization.policy(this.props.on)[this.props.perform]();
+    } else {
+      isPermitted = SimpleAuthorization.policy(this.props.on, this.props.containing)[this.props.perform]();
     }
 
-    return SimpleAuthorization.policy(this.props.on, this.props.containing)[this.props.perform]();
+    return this.props.cannot ? !isPermitted : isPermitted;
   }
 
   /**
@@ -51,6 +55,7 @@ class Authorize extends React.Component {
 }
 
 Authorize.propTypes = {
+  cannot: PropTypes.bool,
   containing: PropTypes.object,
   on: PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.string]).isRequired,
   perform: PropTypes.string.isRequired
