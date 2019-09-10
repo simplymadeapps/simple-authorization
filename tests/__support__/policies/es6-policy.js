@@ -1,4 +1,4 @@
-var ApplicationPolicy = require("../../../src").ApplicationPolicy;
+var ApplicationPolicy = require("./application-policy");
 
 /**
  * Policy for testing ES6 exporting as default.
