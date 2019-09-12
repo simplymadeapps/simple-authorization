@@ -1,6 +1,6 @@
 {
   "name": "simple-authorization",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Authorization through JavaScript classes with support for React",
   "homepage": "https://github.com/simplymadeapps/simple-authorization",
   "license": "MIT",

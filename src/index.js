@@ -29,7 +29,7 @@ class Authorize extends React.Component {
    * @returns {boolean} Whether the user is permitted
    */
   isPermitted() {
-    let isPermitted;
+    var isPermitted;
 
     if (this.props.containing == null) {
       isPermitted = SimpleAuthorization.policy(this.props.on)[this.props.perform]();
