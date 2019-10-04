@@ -16,13 +16,16 @@ Install the package via [Yarn](https://yarnpkg.com):
 yarn add simple-authorization
 ```
 
-Initialize Simple Authorization to point to the directory with your policy classes
-and to configure the data made available to your policy classes.
+Initialize Simple Authorization to configure the data made available to your policy classes,
+and configure the policy class to use based on the name of the model that's being authorized.
 
 ```js
+import CommentPolicy from "../policies/comment-policy";
+import PostPolicy from "../policies/post-policy";
 import SimpleAuthorization from "simple-authorization";
 
-// Assign a function that will return the data you need in each of your policies to make authorization decisions.
+// Assign a function that will return the data you need in
+// each of your policies to make authorization decisions.
 SimpleAuthorization.policyData = () => {
   const currentUser = { id: 5 };
   const role = {
@@ -34,9 +37,15 @@ SimpleAuthorization.policyData = () => {
   return { currentUser, role };
 };
 
-// Assign a function that will return your policy class based on the given model name.
+// Assign a function that will return your
+// policy class based on the given model name.
 SimpleAuthorization.policyResolver = modelName => {
-  return require("src/policies/" + modelName + "Policy");
+  switch (modelName) {
+    case "Comment":
+      return CommentPolicy;
+    case "Post":
+      return PostPolicy;
+  }
 };
 ```
 
@@ -73,8 +82,9 @@ class PostPolicy extends ApplicationPolicy {
   }
 
   /**
-   * Permission to edit a blog post. In this example, we need to know if the post was
-   * created by the current user or another user when checking the user's permissions.
+   * Permission to edit a blog post. In this example, we need to
+   * know if the post was created by the current user or another
+   * user when checking the user's permissions.
    *
    * `this.record` is the object we're passing in when calling `policy()`.
    *
@@ -90,8 +100,8 @@ class PostPolicy extends ApplicationPolicy {
 }
 ```
 
-The policies can be used in multiple ways by using the `policy()` helper method. Each of the policy classes
-will be loaded based on the name of the policy.
+The policies can be used in multiple ways by using the `policy()` helper method. The policy class that is
+used is determined by the `SimpleAuthorization.policyResolver` function we defined in the configuration step.
 
 ```js
 import { policy } from "simple-authorization";
@@ -103,12 +113,14 @@ policy("Post").create();
 
 const post = new Post({ userId: 10 });
 
-// This will also initialize the PostPolicy class because of the post instance's constructor name,
-// and it will also make the post instance available as `this.record` in the PostPolicy `edit` method.
+// This will also initialize the PostPolicy class because of the post
+// instance's constructor name, and it will also make the post instance
+// available as `this.record` in the PostPolicy `edit` method.
 policy(post).edit();
 // => false
 
-// If you don't have an instance of a class, you can still make a plain object available as `this.record`.
+// If you don't have an instance of a class, you can still make a plain
+// object available as `this.record`.
 policy("Post", { userId: 5 }).edit();
 // => true
 ```
