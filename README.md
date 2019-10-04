@@ -16,6 +16,8 @@ Install the package via [Yarn](https://yarnpkg.com):
 yarn add simple-authorization
 ```
 
+## Configuration
+
 Initialize Simple Authorization to configure the data made available to your policy classes,
 and configure the policy class to use based on the name of the model that's being authorized.
 
