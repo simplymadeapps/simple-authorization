@@ -10,6 +10,52 @@ beforeEach(() => {
   });
 });
 
+afterEach(() => {
+  Authorize.instances = [];
+});
+
+describe("Authorize#componentDidMount", () => {
+  beforeAll(() => {
+    mockPolicyInstance = { view: jest.fn() };
+  });
+
+  it("adds the component instance to Authorize.instances", () => {
+    const component = shallow(
+      <Authorize perform="view" on="UserBoard">
+        <div className="user-board" />
+      </Authorize>,
+      { disableLifecycleMethods: true }
+    );
+    const instance = component.instance();
+
+    Authorize.instances = [];
+    instance.componentDidMount();
+
+    expect(Authorize.instances).toEqual([instance]);
+  });
+});
+
+describe("Authorize#componentWillUnmount", () => {
+  beforeAll(() => {
+    mockPolicyInstance = { view: jest.fn() };
+  });
+
+  it("removes the component instance to Authorize.instances", () => {
+    const component = shallow(
+      <Authorize perform="view" on="UserBoard">
+        <div className="user-board" />
+      </Authorize>,
+      { disableLifecycleMethods: true }
+    );
+    const instance = component.instance();
+
+    Authorize.instances = [{}, {}, instance, {}];
+    instance.componentWillUnmount();
+
+    expect(Authorize.instances).toEqual([{}, {}, {}]);
+  });
+});
+
 describe("Authorize#isPermitted", () => {
   beforeEach(() => {
     mockPolicyInstance = { new: jest.fn(), update: jest.fn() };
@@ -103,5 +149,34 @@ describe("Authorize#render", () => {
     );
 
     expect(component.instance().render()).toBe(null);
+  });
+});
+
+describe("Authorize.forceUpdateAll", () => {
+  beforeAll(() => {
+    mockPolicyInstance = { view: jest.fn() };
+  });
+
+  it("calls `forceUpdate` on each of the mounted Authorize instances", () => {
+    const component1 = shallow(
+      <Authorize perform="view" on="UserBoard">
+        <div className="user-board" />
+      </Authorize>
+    );
+    const instance1 = component1.instance();
+    jest.spyOn(instance1, "forceUpdate");
+
+    const component2 = shallow(
+      <Authorize perform="view" on="UserBoard">
+        <div className="user-board" />
+      </Authorize>
+    );
+    const instance2 = component2.instance();
+    jest.spyOn(instance2, "forceUpdate");
+
+    Authorize.forceUpdateAll();
+
+    expect(instance1.forceUpdate.mock.calls.length).toBe(1);
+    expect(instance2.forceUpdate.mock.calls.length).toBe(1);
   });
 });
