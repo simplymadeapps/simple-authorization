@@ -154,6 +154,25 @@ export default props => {
 };
 ```
 
+Because the `SimpleAuthorization.policyData` function isn't aware of when the data returned changes,
+the `<Authorize>` component keeps track of each of the mounted instances so they can be forced
+to render when your policy data changes.
+
+```js
+import { Authorize } from "simple-authorization;
+import store from "./store"; // Redux store
+
+let currentUserRole;
+store.subscribe(() => {
+  let previousUserRole = currentUserRole;
+  currentUserRole = store.getState().userRole;
+
+  if (previousUserRole !== currentUserRole) {
+    Authorize.forceUpdateAll();
+  }
+});
+```
+
 If you're looking to render markup for when a user is not permitted to perform an action, simply add `cannot`.
 
 ```jsx

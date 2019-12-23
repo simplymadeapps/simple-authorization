@@ -24,6 +24,21 @@ var SimpleAuthorization = {};
  */
 class Authorize extends React.Component {
   /**
+   * Adds the instance to the instances array so it can be re-rendered when the policy data changes.
+   */
+  componentDidMount() {
+    Authorize.instances.push(this);
+  }
+
+  /**
+   * Removes the instance from the instances array to remove it from being re-rendered on policy data changes.
+   */
+  componentWillUnmount() {
+    var index = Authorize.instances.indexOf(this);
+    Authorize.instances.splice(index, 1);
+  }
+
+  /**
    * Returns whether the user is permitted to perform the action.
    *
    * @returns {boolean} Whether the user is permitted
@@ -53,6 +68,17 @@ class Authorize extends React.Component {
     return null;
   }
 }
+
+/**
+ * Force updates all mounted instances of the Authorize component.
+ */
+Authorize.forceUpdateAll = () => {
+  for (var i = 0; i < Authorize.instances.length; i++) {
+    Authorize.instances[i].forceUpdate();
+  }
+};
+
+Authorize.instances = [];
 
 Authorize.propTypes = {
   cannot: PropTypes.bool,
