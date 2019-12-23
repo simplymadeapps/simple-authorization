@@ -28,7 +28,6 @@ describe("Authorize#componentDidMount", () => {
     );
     const instance = component.instance();
 
-    Authorize.instances = [];
     instance.componentDidMount();
 
     expect(Authorize.instances).toEqual([instance]);
