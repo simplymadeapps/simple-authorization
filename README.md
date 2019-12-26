@@ -133,7 +133,7 @@ Simple Authorization also includes an `<Authorize>` React component for wrapping
 be conditionally displayed based on the user's permissions.
 
 ```jsx
-import { Authorize } from "simple-authorization;
+import { Authorize } from "simple-authorization";
 
 export default props => {
   return (
@@ -159,7 +159,7 @@ the `<Authorize>` component keeps track of each of the mounted instances so they
 to render when your policy data changes.
 
 ```js
-import { Authorize } from "simple-authorization;
+import { Authorize } from "simple-authorization";
 import store from "./store"; // Redux store
 
 let currentUserRole;
@@ -176,7 +176,7 @@ store.subscribe(() => {
 If you're looking to render markup for when a user is not permitted to perform an action, simply add `cannot`.
 
 ```jsx
-import { Authorize } from "simple-authorization;
+import { Authorize } from "simple-authorization";
 
 export default props => {
   return (
