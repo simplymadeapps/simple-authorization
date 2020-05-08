@@ -137,13 +137,13 @@ function getPolicyData(classOrRecord, recordAttributes) {
  */
 function policy(classOrRecord, recordAttributes) {
   var policyData = getPolicyData(classOrRecord, recordAttributes);
+  var PolicyClass = SimpleAuthorization.policyResolver(policyData.modelName);
 
-  try {
-    var PolicyClass = SimpleAuthorization.policyResolver(policyData.modelName);
+  if (typeof PolicyClass === "function") {
     return new PolicyClass(policyData);
-  } catch (error) {
-    throw new Error("SimpleAuthorization.policyResolver could not resolve a policy class for " + policyData.modelName);
   }
+
+  throw new Error("SimpleAuthorization.policyResolver could not resolve a policy class for " + policyData.modelName);
 }
 
 SimpleAuthorization.Authorize = Authorize;

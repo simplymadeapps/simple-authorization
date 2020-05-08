@@ -2,7 +2,23 @@ var SimpleAuthorization = require("../src");
 var UserPolicy = require("./__support__/policies/UserPolicy");
 var policy = SimpleAuthorization.policy;
 
+/**
+ * Class for testing that the policy function throws errors when a matching policy can't be found.
+ */
 class MockMissingClass {}
+
+/**
+ * Class for testing that we don't catch errors thrown in a policy's constructor.
+ */
+class MockPolicyWithError {
+  constructor() {
+    throw new Error("mock error in policy constructor");
+  }
+}
+
+/**
+ * Class for testing that the UserPolicy is returned from the policy resolver.
+ */
 class User {}
 
 beforeEach(() => {
@@ -11,7 +27,13 @@ beforeEach(() => {
   };
 
   SimpleAuthorization.policyResolver = modelName => {
-    return require("./__support__/policies/" + modelName + "Policy");
+    switch (modelName) {
+      case "MockModelNameWithError":
+        return MockPolicyWithError;
+      case "User":
+        return UserPolicy;
+      default:
+    }
   };
 });
 
@@ -62,11 +84,19 @@ describe("policy", () => {
     expect(() => {
       policy("MockMissingClass");
     }).toThrowError("SimpleAuthorization.policyResolver could not resolve a policy class for MockMissingClass");
+
     expect(() => {
       policy(MockMissingClass);
     }).toThrowError("SimpleAuthorization.policyResolver could not resolve a policy class for MockMissingClass");
+
     expect(() => {
       policy(new MockMissingClass());
     }).toThrowError("SimpleAuthorization.policyResolver could not resolve a policy class for MockMissingClass");
+  });
+
+  it("raises the original error if there's an issue initializing the policy class", () => {
+    expect(() => {
+      policy("MockModelNameWithError");
+    }).toThrowError("mock error in policy constructor");
   });
 });
