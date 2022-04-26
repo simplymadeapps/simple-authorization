@@ -31,6 +31,8 @@ jobs:
       - name: Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
         with:
-          workingDirectory: ${{ env.GITHUB_WORKSPACE }}
+          coverageCommand: yarn test
+          coverageLocations: |
+            ${{github.workspace}}/*.lcov:lcov
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
