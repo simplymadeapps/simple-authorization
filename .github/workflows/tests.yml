@@ -1,0 +1,39 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    env:
+      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.16.3
+
+      - name: Install Code Climate
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
+
+      - name: Install dependencies
+        uses: borales/actions-yarn@v2.1.0
+        with:
+          cmd: install
+    
+      - name: Yarn test
+        uses: borales/actions-yarn@v2.1.0
+        with:
+          cmd: test
+    
+      - name: Yarn Lint
+        uses: borales/actions-yarn@v2.1.0
+        with:
+          cmd: lint
+    
+      - name: Code Climate
+        run: ./cc-test-reporter after-build --exit-code $?
