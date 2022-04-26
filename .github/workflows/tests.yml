@@ -32,6 +32,6 @@ jobs:
         uses: paambaati/codeclimate-action@v3.0.0
         with:
           coverageLocations: |
-            ${{github.workspace}}/coverage/lcov.info
+            ${{github.workspace}}/coverage/lcov.info:lcov
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
