@@ -36,4 +36,6 @@ jobs:
           cmd: test
     
       - name: Code Climate
-        run: ./cc-test-reporter after-build --exit-code $?
+        run: |
+          pwd
+          ./cc-test-reporter after-build -d --exit-code $?
