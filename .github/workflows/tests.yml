@@ -1,0 +1,19 @@
+name: tests
+on: [pull_request]
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10.16.3
+      - run: npm install -g yarn
+      - run: yarn install
+      - run: yarn lint
+      - run: yarn test
+      - uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageLocations:  ${{github.workspace}}/coverage/lcov.info:lcov

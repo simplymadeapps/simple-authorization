@@ -1,6 +1,6 @@
 # Simple Authorization
 
-[![Build Status](https://travis-ci.org/simplymadeapps/simple-authorization.svg?branch=master)](https://travis-ci.org/simplymadeapps/simple-authorization)
+[![Build Status](https://github.com/simplymadeapps/simple-authorization/actions/workflows/tests.yml/badge.svg)](https://github.com/simplymadeapps/simple-authorization/actions/workflows/tests.yml)
 [![Code Climate](https://codeclimate.com/github/simplymadeapps/simple-authorization/badges/gpa.svg)](https://codeclimate.com/github/simplymadeapps/simple-authorization)
 [![Test Coverage](https://codeclimate.com/github/simplymadeapps/simple-authorization/badges/coverage.svg)](https://codeclimate.com/github/simplymadeapps/simple-authorization/coverage)
 
